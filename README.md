@@ -9,9 +9,9 @@ Update name file .config.env => .env
 
 Set Parameter in file .env
 
-run command line
+# run command line
 
-# npm i
-# npm i pm2 -g
-# pm2 start index.js -name ayo_connect -i 2
-# pm2 startup
+npm i
+npm i pm2 -g
+pm2 start index.js -name ayo_connect -i 2
+pm2 startup
