@@ -278,7 +278,7 @@ class main_db {
     static async update_std_refer(opt){
         let _conn = mysql.master();
         return new Promise((resolve, reject) => {
-            var sql = `UPDATE std_refer SET flag=1 WHERE hoscode = ${opt.hoscode} and cid = ${opt.cid} and date_refer = ${opt.date_refer} `;
+            var sql = `UPDATE std_refer SET flag=1 WHERE hoscode = '${opt.hoscode}' and cid = '${opt.cid}' and date_refer = '${opt.date_refer}' `;
             _conn.query(sql, (err, res) => {
                 if (err) throw err;
                 disconnect(_conn);
