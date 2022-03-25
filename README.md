@@ -9,6 +9,18 @@ Update name file .config.env => .env
 
 Set Parameter in file .env
 
+# Execute SQL File
+
+connect database mysql
+
+execute sql file in folder /database/ayo_connect.sql
+
+update PROCEDURE in mysql 
+
+delete line 1 "DEFINER=`root`@`%`"
+
+save PROCEDURE
+
 # run command line
 
 npm i
