@@ -1,7 +1,7 @@
 # ayo_connect
 gate way ayo
 
-git Clone https://github.com/donkuku/ayo_connect/
+git clone https://github.com/donkuku/ayo_connect/
 
 cd directory/ayo_connect
 
