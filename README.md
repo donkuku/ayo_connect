@@ -1,5 +1,5 @@
 # ayo_connect
-gate way ayo
+install node and git
 
 git clone https://github.com/donkuku/ayo_connect.git
 
