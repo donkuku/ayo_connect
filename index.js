@@ -51,42 +51,22 @@ app.get(/.*/, (req, res) => res.sendFile(__dirname + "/public/index.html"));
 
 
 // Check Login
-app.post('/login', async (req, res) => {
-    token = await api_axios.login(username, password);
-    req.session.user_token = token
-    res.send(token);
+app.post('/login', check_login, async (req, res) => {
+    res.send("login success")
 })
 
 // Check Transfer Data
-app.post('/check_pid', check_login, async (req, res) => {
-    var res_api = await api_axios.getPid();
-    if (res_api != 'error') {
-        data_cid = res_api.result;
-        /*
-        data_cid.forEach(element => {
-            cid = element.person_cid;
-            // insert table std_cid_chekc
-            main_db.ins_std_cid_check(cid);
-
-            // insert data his to ayo_connect all cid
-            main_db.transfer_data(db_name_his, cid);
-        });
-        */
-        res.send(data_cid);
-    } else {
-        res.send('check_pid error');
-    }
+app.post('/check_pid', check_login, transfer_his_ayo_connect, async (req, res) => {
+    res.send("check_pid and transfer data: success")
 })
 
 // Send Data
 app.post('/send_data', check_login, transfer_his_ayo_connect, async (req, res) => {
-    console.log("start send data");
-    //var cid = (req.body.cid)? req.body.cid : '';
     opt = { cid: req.body.cid };
 
     try {
-        await sendData(opt)
-        console.log("end send data");
+        res_send = await sendData(opt)
+        console.log("send success");
         res.send("success")
     } catch (error) {
         console.log(error)
@@ -96,51 +76,80 @@ app.post('/send_data', check_login, transfer_his_ayo_connect, async (req, res) =
 
 // Middleware
 async function check_login(req, res, next) {
-    console.log("start login");
-    token = await api_axios.login(username, password);
-    req.session.user_token = token
-    console.log("end login");
-    next();
+    console.log("login");
+    res_login = await api_axios.login(username, password);
+
+    if(res_login.status == "true"){
+        req.session.user_token = token
+        next();
+    }else{
+        console.log(res_login.message)
+        res.send(res_login.message)
+    }
 }
 
 async function transfer_his_ayo_connect(req, res, next) {
-    console.log("start transfer_his_ayo_connect");
+    console.log("Transfer data his to ayo_connect");
     var cid = req.body.cid
     if (cid) {
         // insert data his to ayo_connect all cid
-        status_transfer = await main_db.transfer_data(db_name_his, cid)
-        console.log("end transfer_his_ayo_connect");
-        next()
-    } else {
-        var res_api = await api_axios.getPid();
-        console.log(res_api);
-        if (res_api != 'error') { 
-            data_cid = res_api.result;
-
-            // inset std_cid_check
-            await data_cid.forEach(async (element) => {
-                cid = element.person_cid
-                // insert table std_cid_check
-                await main_db.ins_std_cid_check(cid);
-            });
-
-            // check std_cid_check
-            await main_db.check_cid(db_name_his)
-            
-            // Transfer data
-            await data_cid.forEach(async (element) => {
-                cid = element.person_cid
-                await main_db.transfer_data(db_name_his, cid)
-            });
-            console.log("end transfer_his_ayo_connect");
+        res_main = await main_db.transfer_data(db_name_his, cid)
+        if(res_main.status == "true"){
             next()
+        }else{
+            res.send(res_main.message)
+        }
+    } else {
+        // get cid for api
+        var res_api = await api_axios.getPid();
+        if (res_api.status == 'true') {  
+            data_cid = res_api.message;
+            
+            // insert table std_cid_check
+            for (let i = 0; i < data_cid.length; i++) {
+                cid = data_cid[i].person_cid   
+                res_main = await main_db.ins_std_cid_check(cid)
+                if(res_main.status == "false"){
+                    break
+                }                 
+            }
+
+            // check status insert table std_cid_check
+            if(res_main.status == "false"){
+                res.send(res_main.message)
+            }else{
+                // check std_cid_check
+                res_main = await main_db.check_cid(db_name_his)
+
+                if(res_main.status == "false"){
+                    res.send(res_main.message)
+                }else{
+                    for (let i = 0; i < data_cid.length; i++) {
+                        cid = data_cid[i].person_cid
+                        res_main = await main_db.transfer_data(db_name_his, cid)
+                        if(res_main.status == "false"){
+                            break
+                        }
+                    }
+
+                    if(res_main.status == "false"){
+                        res.send(res_main.message)
+                    }else{
+                        console.log("end transfer_his_ayo_connect");
+                        next()
+                    }
+                }
+            }
         } else {
-            res.send("reload data cid faild")
+            res.send(res_api.message)
         }
     }
 }
 
+// Function
+
 async function sendData(opt) {
+    console.log("start send data");
     res_sta_std_admission = await api_axios.send_std_admission(opt)
     res_sta_std_ipd_diag = await api_axios.send_std_ipd_diag(opt)
     res_sta_std_ipd_drug = await api_axios.send_std_ipd_drug(opt)

@@ -21,12 +21,15 @@ class ayo_connect {
                 username: g_username,
                 password: g_password
             }).then(function (response) {
-                token = response.data.token
-                // Update Config Authorization
-                config.headers.Authorization = `Bearer ${token}`
-                resolve(token)
+                if(response.data.auth){
+                    // Update Config Authorization
+                    config.headers.Authorization = `Bearer ${response.data.token}`
+                    resolve({status: "true", message: response.data.token})
+                }else{
+                    resolve({status: "false", message: response.data.message})
+                }
             }).catch(function (error) {
-                resolve("error");
+                resolve({status: "false", message: "can't connect api"});
             });
         });
     }
@@ -36,21 +39,21 @@ class ayo_connect {
             axios.post(url + '/api/checkconsent', {}, config).then(async (response) => {
                 if (response.data.MessageCode == '200') {
                     // success
-                    resolve(response.data);
+                    resolve({status: "true", message: response.data.result});
                 } else {
                     // error
                     console.log("error: ", response.data);
-                    resolve('error')
+                    resolve({status: "false", message: "Can't Load Data CID"})
                 }
             }).catch(function (error) {
-                console.log(error);
-                resolve("error");
+                resolve({status: "false", message: error.response.data.message});
             });
         });
     }
 
     // send data
     static async send_std_admission(opt) {
+        console.log("start send data table std_admission");
         let data_std_admission = await db_main.get_std_admission(opt);
 
         return new Promise((resolve, reject) => {
@@ -60,27 +63,30 @@ class ayo_connect {
                         .then(async (response) => {
                             if (response.data.message == '') {
                                 // success
-                                await main_db.update_std_admission(item)
-                                console.log("send_std_admission");
-                                resolve("success");
+                                res_main = await main_db.update_std_admission(item)
+                                if(res_main.status == "false"){
+                                    resolve({status: "false", message: res_main.message});
+                                }else{
+                                    resolve({status: "true", message: res_main.message});
+                                }
                             } else {
                                 // error
-                                console.log("error: ", response.data.sqlMessage);
-                                resolve("error")
+                                resolve({status: "false", message: response.data.sqlMessage})
                             }
                         }).catch(function (error) {
-                            console.log(error);
-                            resolve("error")
+                            // error
+                            resolve({status: "false", message: error.errorno})
                         });
                 });
             } else {
-                resolve("Not data std_admission send to datacenter");
+                resolve({status: "true", message: "Not data std_admission send to datacenter"});
             }
         });
 
     }
 
     static async send_std_ipd_diag(opt) {
+        console.log("start send data table std_ipd_diag");
         let data_std_ipd_diag = await db_main.get_std_ipd_diag(opt);
 
         return new Promise((resolve, reject) => {
@@ -90,26 +96,27 @@ class ayo_connect {
                         .then(async (response) => {
                             if (response.data.message == '') {
                                 // success
-                                await main_db.update_std_ipd_diag(item)
-                                console.log("send_std_ipd_diag");
-                                resolve("success");
+                                res_main = await main_db.update_std_ipd_diag(item)
+                                if(res_main.status == "false"){
+                                    resolve({status: "false", message: res_main.message})
+                                }else{
+                                    resolve({status: "true", message: res_main.message})
+                                }
                             } else {
-                                // error
-                                console.log("error: ", response.data.sqlMessage)
-                                resolve("error")
+                                resolve({status: "false", message: response.data.sqlMessage})
                             }
                         }).catch(function (error) {
-                            console.log(error);
-                            resolve("error")
+                            resolve({status: "false", message: error.errorno})
                         });
                 });
             } else {
-                resolve("Not data std_ipd_diag send to datacenter ")
+                resolve({status: "true", message: "Not data std_ipd_diag send to datacenter"})
             }
         });
     }
 
     static async send_std_ipd_drug(opt) {
+        console.log("start send data table std_ipd_drug");
         let data_std_ipd_drug = await db_main.get_std_ipd_drug(opt);
 
         return new Promise((resolve, reject) => {
@@ -119,26 +126,28 @@ class ayo_connect {
                         .then(async (response) => {
                             if (response.data.message == '') {
                                 // success
-                                await main_db.update_std_ipd_drug(item)
-                                console.log("send_std_ipd_drug");
-                                resolve("success");
+                                res_main = await main_db.update_std_ipd_drug(item)
+                                if(res_main.status == "false"){
+                                    resolve({status: "false", message: res_main.message})
+                                }else{
+                                    resolve({status: "true", message: res_main.message})
+                                }
                             } else {
                                 // error
-                                console.log("error: ", response.data.sqlMessage);
-                                resolve("error")
+                                resolve({status: "false", message: response.data.sqlMessage})
                             }
                         }).catch(function (error) {
-                            console.log(error);
-                            resolve("error")
+                            resolve({status: "false", message: error.errorno})
                         });
                 });
             } else {
-                resolve("Not data std_ipd_drug send to datacenter ")
+                resolve({status: "true", message: "Not data std_ipd_drug send to datacenter"})
             }
         });
     }
 
     static async send_std_ipd_lab(opt) {
+        console.log("start send data table std_ipd_lab");
         let data_std_ipd_lab = await db_main.get_std_ipd_lab(opt);
 
         return new Promise((resolve, reject) => {
@@ -148,26 +157,28 @@ class ayo_connect {
                         .then(async (response) => {
                             if (response.data.message == '') {
                                 // success
-                                await main_db.update_std_ipd_lab(item)
-                                console.log("send_std_ipd_lab");
-                                resolve("success");
+                                res_main = await main_db.update_std_ipd_lab(item)
+                                if(res_main.status == "false"){
+                                    resolve({status: "false", message: res_main.message})
+                                }else{
+                                    resolve({status: "true", message: res_main.message})
+                                }
                             } else {
                                 // error
-                                console.log("error: ", response.data.sqlMessage);
-                                resolve("error")
+                                resolve({status: "false", message: response.data.sqlMessage})
                             }
                         }).catch(function (error) {
-                            console.log(error);
-                            resolve("error")
+                            resolve({status: "false", message: error.errorno})
                         });
                 });
             } else {
-                resolve("Not data std_ipd_lab send to datacenter ")
+                resolve({status: "true", message: "Not data std_ipd_lab send to datacenter"})
             }
         });
     }
 
     static async send_std_opd_diag(opt) {
+        console.log("start send data table std_opd_diag");
         let data_std_opd_diag = await db_main.get_std_opd_diag(opt);
 
         return new Promise((resolve, reject) => {
@@ -177,26 +188,28 @@ class ayo_connect {
                         .then(async (response) => {
                             if (response.data.message == '') {
                                 // success
-                                await main_db.update_std_opd_diag(item)
-                                console.log("send_std_opd_diag");
-                                resolve("success");
+                                res_main = await main_db.update_std_opd_diag(item)
+                                if(res_main.status == "false"){
+                                    resolve({status: "false", message: res_main.message})
+                                }else{
+                                    resolve({status: "true", message: res_main.message})
+                                }
                             } else {
                                 // error
-                                console.log("error: ", response.data.sqlMessage);
-                                resolve("error")
+                                resolve({status: "false", message: response.data.sqlMessage})
                             }
                         }).catch(function (error) {
-                            console.log(error);
-                            resolve("error")
+                            resolve({status: "false", message: error.errorno})
                         });
                 });
             } else {
-                resolve("Not data std_opd_diag send to datacenter ")
+                resolve({status: "true", message: "Not data std_opd_diag send to datacenter"})
             }
         });
     }
 
     static async send_std_opd_drug(opt) {
+        console.log("start send data table std_opd_drug");
         let data_std_opd_drug = await db_main.get_std_opd_drug(opt);
 
         return new Promise((resolve, reject) => {
@@ -206,26 +219,28 @@ class ayo_connect {
                         .then(async (response) => {
                             if (response.data.message == '') {
                                 // success
-                                await main_db.update_std_opd_drug(item)
-                                console.log("send_std_opd_drug")
-                                resolve("success")
+                                res_main = await main_db.update_std_opd_drug(item)
+                                if(res_main.status == "false"){
+                                    resolve({status: "false", message: res_main.message})
+                                }else{
+                                    resolve({status: "true", message: res_main.message})
+                                }
                             } else {
                                 // error
-                                console.log("error: ", response.data.sqlMessage);
-                                resolve("error")
+                                resolve({status: "false", message: response.data.sqlMessage})
                             }
                         }).catch(function (error) {
-                            console.log(error);
-                            resolve("error")
+                            resolve({status: "false", message: error.errorno})
                         });
                 })
             } else {
-                resolve("Not data std_opd_drug send to datacenter ")
+                resolve({status: "true", message: "Not data std_opd_drug send to datacenter"})
             }
         });
     }
 
     static async send_std_opd_lab(opt) {
+        console.log("start send data table std_opd_lab");
         let data_std_opd_lab = await db_main.get_std_opd_lab(opt);
 
         return new Promise((resolve, reject) => {
@@ -235,26 +250,28 @@ class ayo_connect {
                         .then(async (response) => {
                             if (response.data.message == '') {
                                 // success
-                                await main_db.update_std_opd_lab(item)
-                                console.log("send_std_opd_lab")
-                                resolve("success")
+                                res_main = await main_db.update_std_opd_lab(item)
+                                if(res_main.status == "false"){
+                                    resolve({status: "false", message: res_main.message})
+                                }else{
+                                    resolve({status: "true", message: res_main.message})
+                                }
                             } else {
                                 // error
-                                console.log("error: ", response.data.sqlMessage);
-                                resolve("error")
+                                resolve({status: "false", message: response.data.sqlMessage})
                             }
                         }).catch(function (error) {
-                            console.log(error)
-                            resolve("error")
+                            resolve({status: "false", message: error.errorno})
                         });
                 })
             } else {
-                resolve("Not data std_opd_lab send to datacenter ")
+                resolve({status: "true", message: "Not data std_opd_lab send to datacenter"})
             }
         });
     }
 
     static async send_std_person(opt) {
+        console.log("start send data table std_person");
         let data_person = await db_main.get_std_person(opt);
 
         return new Promise((resolve, reject) => {
@@ -264,27 +281,29 @@ class ayo_connect {
                         .then(async (response) => {
                             if (response.data.message == '') {
                                 // success
-                                await main_db.update_std_person(item)
-                                console.log("send_std_person");
-                                resolve("success");
+                                res_main = await main_db.update_std_person(item)
+                                if(res_main.status == "false"){
+                                    resolve({status: "false", message: res_main.message})
+                                }else{
+                                    resolve({status: "true", message: res_main.message})
+                                }
                             } else {
                                 // error
-                                console.log("error: ", response.data.sqlMessage);
-                                resolve("error")
+                                resolve({status: "false", message: response.data.sqlMessage})
                             }
                         }).catch(function (error) {
-                            console.log(error);
-                            resolve("error")
+                            resolve({status: "false", message: error.errorno})
                         });
                 })
             } else {
-                resolve("Not data std_person send to datacenter ")
+                resolve({status: "true", message: "Not data std_person send to datacenter"})
             }
         });
 
     }
 
     static async send_std_refer(opt) {
+        console.log("start send data table std_refer");
         let data_std_refer = await db_main.get_std_refer(opt)
 
         return new Promise((resolve, reject) => {
@@ -294,26 +313,28 @@ class ayo_connect {
                         .then(async (response) => {
                             if (response.data.message == '') {
                                 // success
-                                await main_db.update_std_refer(item)
-                                console.log("send_std_refer");
-                                resolve("success");
+                                res_main = await main_db.update_std_refer(item)
+                                if(res_main.status == "false"){
+                                    resolve({status: "false", message: res_main.message})
+                                }else{
+                                    resolve({status: "true", message: res_main.message})
+                                }
                             } else {
                                 // error
-                                console.log("error: ", response.data.sqlMessage);
-                                resolve("error")
+                                resolve({status: "false", message: response.data.sqlMessage})
                             }
                         }).catch(function (error) {
-                            console.log(error);
-                            resolve("error")
+                            resolve({status: "false", message: error.errorno})
                         });
                 })
             } else {
-                resolve("Not data std_refer send to datacenter ")
+                resolve({status: "true", message: "Not data std_refer send to datacenter"})
             }
         });
     }
 
     static async send_std_service(opt) {
+        console.log("start send data table std_service");
         let data_std_service = await db_main.get_std_service(opt);
 
         return new Promise((resolve, reject) => {
@@ -323,17 +344,18 @@ class ayo_connect {
                         .then(async (response) => {
                             if (response.data.message == '') {
                                 // success
-                                await main_db.update_std_service(item)
-                                console.log("send_std_service");
-                                resolve("success");
+                                res_main = await main_db.update_std_service(item)
+                                if(res_main.status == "false"){
+                                    resolve({status: "false", message: res_main.message})
+                                }else{
+                                    resolve({status: "true", message: res_main.message})
+                                }
                             } else {
                                 // error
-                                console.log("error: ", response.data.sqlMessage);
-                                resolve("error")
+                                resolve({status: "false", message: response.data.sqlMessage})
                             }
                         }).catch(function (error) {
-                            console.log(error);
-                            resolve("error")
+                            resolve({status: "false", message: error.errorno})
                         });
                 })
             } else {
