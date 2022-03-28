@@ -353,6 +353,8 @@ class main_db {
         })
     }
 
+
+    // auto
     static select_table_all() {
         let _conn = mysql.master()
         return new Promise((resolve, reject) => {
