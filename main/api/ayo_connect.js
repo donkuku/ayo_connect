@@ -6,6 +6,7 @@ dotenv.config();
 
 const url = process.env.url
 var token = process.env.token
+var res_main
 var config = {
     headers: {
         'Authorization': `Bearer ${token}`,
@@ -21,15 +22,15 @@ class ayo_connect {
                 username: g_username,
                 password: g_password
             }).then(function (response) {
-                if(response.data.auth){
+                if (response.data.auth) {
                     // Update Config Authorization
                     config.headers.Authorization = `Bearer ${response.data.token}`
-                    resolve({status: "true", message: response.data.token})
-                }else{
-                    resolve({status: "false", message: response.data.message})
+                    resolve({ status: "true", message: response.data.token })
+                } else {
+                    resolve({ status: "false", message: response.data.message })
                 }
             }).catch(function (error) {
-                resolve({status: "false", message: "can't connect api"});
+                resolve({ status: "false", message: "can't connect api" });
             });
         });
     }
@@ -39,14 +40,14 @@ class ayo_connect {
             axios.post(url + '/api/checkconsent', {}, config).then(async (response) => {
                 if (response.data.MessageCode == '200') {
                     // success
-                    resolve({status: "true", message: response.data.result});
+                    resolve({ status: "true", message: response.data.result });
                 } else {
                     // error
                     console.log("error: ", response.data);
-                    resolve({status: "false", message: "Can't Load Data CID"})
+                    resolve({ status: "false", message: "Can't Load Data CID" })
                 }
             }).catch(function (error) {
-                resolve({status: "false", message: error.response.data.message});
+                resolve({ status: "false", message: error.response.data.message });
             });
         });
     }
@@ -64,22 +65,22 @@ class ayo_connect {
                             if (response.data.message == '') {
                                 // success
                                 res_main = await main_db.update_std_admission(item)
-                                if(res_main.status == "false"){
-                                    resolve({status: "false", message: res_main.message});
-                                }else{
-                                    resolve({status: "true", message: res_main.message});
+                                if (res_main.status == "false") {
+                                    resolve({ status: "false", message: res_main.message });
+                                } else {
+                                    resolve({ status: "true", message: res_main.message });
                                 }
                             } else {
                                 // error
-                                resolve({status: "false", message: response.data.sqlMessage})
+                                resolve({ status: "false", message: response.data.sqlMessage })
                             }
                         }).catch(function (error) {
                             // error
-                            resolve({status: "false", message: error.errorno})
+                            resolve({ status: "false", message: error.errorno })
                         });
                 });
             } else {
-                resolve({status: "true", message: "Not data std_admission send to datacenter"});
+                resolve({ status: "true", message: "Not data std_admission send to datacenter" });
             }
         });
 
@@ -97,20 +98,20 @@ class ayo_connect {
                             if (response.data.message == '') {
                                 // success
                                 res_main = await main_db.update_std_ipd_diag(item)
-                                if(res_main.status == "false"){
-                                    resolve({status: "false", message: res_main.message})
-                                }else{
-                                    resolve({status: "true", message: res_main.message})
+                                if (res_main.status == "false") {
+                                    resolve({ status: "false", message: res_main.message })
+                                } else {
+                                    resolve({ status: "true", message: res_main.message })
                                 }
                             } else {
-                                resolve({status: "false", message: response.data.sqlMessage})
+                                resolve({ status: "false", message: response.data.sqlMessage })
                             }
                         }).catch(function (error) {
-                            resolve({status: "false", message: error.errorno})
+                            resolve({ status: "false", message: error.errorno })
                         });
                 });
             } else {
-                resolve({status: "true", message: "Not data std_ipd_diag send to datacenter"})
+                resolve({ status: "true", message: "Not data std_ipd_diag send to datacenter" })
             }
         });
     }
@@ -127,21 +128,21 @@ class ayo_connect {
                             if (response.data.message == '') {
                                 // success
                                 res_main = await main_db.update_std_ipd_drug(item)
-                                if(res_main.status == "false"){
-                                    resolve({status: "false", message: res_main.message})
-                                }else{
-                                    resolve({status: "true", message: res_main.message})
+                                if (res_main.status == "false") {
+                                    resolve({ status: "false", message: res_main.message })
+                                } else {
+                                    resolve({ status: "true", message: res_main.message })
                                 }
                             } else {
                                 // error
-                                resolve({status: "false", message: response.data.sqlMessage})
+                                resolve({ status: "false", message: response.data.sqlMessage })
                             }
                         }).catch(function (error) {
-                            resolve({status: "false", message: error.errorno})
+                            resolve({ status: "false", message: error.errorno })
                         });
                 });
             } else {
-                resolve({status: "true", message: "Not data std_ipd_drug send to datacenter"})
+                resolve({ status: "true", message: "Not data std_ipd_drug send to datacenter" })
             }
         });
     }
@@ -158,21 +159,21 @@ class ayo_connect {
                             if (response.data.message == '') {
                                 // success
                                 res_main = await main_db.update_std_ipd_lab(item)
-                                if(res_main.status == "false"){
-                                    resolve({status: "false", message: res_main.message})
-                                }else{
-                                    resolve({status: "true", message: res_main.message})
+                                if (res_main.status == "false") {
+                                    resolve({ status: "false", message: res_main.message })
+                                } else {
+                                    resolve({ status: "true", message: res_main.message })
                                 }
                             } else {
                                 // error
-                                resolve({status: "false", message: response.data.sqlMessage})
+                                resolve({ status: "false", message: response.data.sqlMessage })
                             }
                         }).catch(function (error) {
-                            resolve({status: "false", message: error.errorno})
+                            resolve({ status: "false", message: error.errorno })
                         });
                 });
             } else {
-                resolve({status: "true", message: "Not data std_ipd_lab send to datacenter"})
+                resolve({ status: "true", message: "Not data std_ipd_lab send to datacenter" })
             }
         });
     }
@@ -189,21 +190,21 @@ class ayo_connect {
                             if (response.data.message == '') {
                                 // success
                                 res_main = await main_db.update_std_opd_diag(item)
-                                if(res_main.status == "false"){
-                                    resolve({status: "false", message: res_main.message})
-                                }else{
-                                    resolve({status: "true", message: res_main.message})
+                                if (res_main.status == "false") {
+                                    resolve({ status: "false", message: res_main.message })
+                                } else {
+                                    resolve({ status: "true", message: res_main.message })
                                 }
                             } else {
                                 // error
-                                resolve({status: "false", message: response.data.sqlMessage})
+                                resolve({ status: "false", message: response.data.sqlMessage })
                             }
                         }).catch(function (error) {
-                            resolve({status: "false", message: error.errorno})
+                            resolve({ status: "false", message: error.errorno })
                         });
                 });
             } else {
-                resolve({status: "true", message: "Not data std_opd_diag send to datacenter"})
+                resolve({ status: "true", message: "Not data std_opd_diag send to datacenter" })
             }
         });
     }
@@ -220,21 +221,21 @@ class ayo_connect {
                             if (response.data.message == '') {
                                 // success
                                 res_main = await main_db.update_std_opd_drug(item)
-                                if(res_main.status == "false"){
-                                    resolve({status: "false", message: res_main.message})
-                                }else{
-                                    resolve({status: "true", message: res_main.message})
+                                if (res_main.status == "false") {
+                                    resolve({ status: "false", message: res_main.message })
+                                } else {
+                                    resolve({ status: "true", message: res_main.message })
                                 }
                             } else {
                                 // error
-                                resolve({status: "false", message: response.data.sqlMessage})
+                                resolve({ status: "false", message: response.data.sqlMessage })
                             }
                         }).catch(function (error) {
-                            resolve({status: "false", message: error.errorno})
+                            resolve({ status: "false", message: error.errorno })
                         });
                 })
             } else {
-                resolve({status: "true", message: "Not data std_opd_drug send to datacenter"})
+                resolve({ status: "true", message: "Not data std_opd_drug send to datacenter" })
             }
         });
     }
@@ -251,21 +252,21 @@ class ayo_connect {
                             if (response.data.message == '') {
                                 // success
                                 res_main = await main_db.update_std_opd_lab(item)
-                                if(res_main.status == "false"){
-                                    resolve({status: "false", message: res_main.message})
-                                }else{
-                                    resolve({status: "true", message: res_main.message})
+                                if (res_main.status == "false") {
+                                    resolve({ status: "false", message: res_main.message })
+                                } else {
+                                    resolve({ status: "true", message: res_main.message })
                                 }
                             } else {
                                 // error
-                                resolve({status: "false", message: response.data.sqlMessage})
+                                resolve({ status: "false", message: response.data.sqlMessage })
                             }
                         }).catch(function (error) {
-                            resolve({status: "false", message: error.errorno})
+                            resolve({ status: "false", message: error.errorno })
                         });
                 })
             } else {
-                resolve({status: "true", message: "Not data std_opd_lab send to datacenter"})
+                resolve({ status: "true", message: "Not data std_opd_lab send to datacenter" })
             }
         });
     }
@@ -282,21 +283,21 @@ class ayo_connect {
                             if (response.data.message == '') {
                                 // success
                                 res_main = await main_db.update_std_person(item)
-                                if(res_main.status == "false"){
-                                    resolve({status: "false", message: res_main.message})
-                                }else{
-                                    resolve({status: "true", message: res_main.message})
+                                if (res_main.status == "false") {
+                                    resolve({ status: "false", message: res_main.message })
+                                } else {
+                                    resolve({ status: "true", message: res_main.message })
                                 }
                             } else {
                                 // error
-                                resolve({status: "false", message: response.data.sqlMessage})
+                                resolve({ status: "false", message: response.data.sqlMessage })
                             }
                         }).catch(function (error) {
-                            resolve({status: "false", message: error.errorno})
+                            resolve({ status: "false", message: error.errorno })
                         });
                 })
             } else {
-                resolve({status: "true", message: "Not data std_person send to datacenter"})
+                resolve({ status: "true", message: "Not data std_person send to datacenter" })
             }
         });
 
@@ -314,21 +315,21 @@ class ayo_connect {
                             if (response.data.message == '') {
                                 // success
                                 res_main = await main_db.update_std_refer(item)
-                                if(res_main.status == "false"){
-                                    resolve({status: "false", message: res_main.message})
-                                }else{
-                                    resolve({status: "true", message: res_main.message})
+                                if (res_main.status == "false") {
+                                    resolve({ status: "false", message: res_main.message })
+                                } else {
+                                    resolve({ status: "true", message: res_main.message })
                                 }
                             } else {
                                 // error
-                                resolve({status: "false", message: response.data.sqlMessage})
+                                resolve({ status: "false", message: response.data.sqlMessage })
                             }
                         }).catch(function (error) {
-                            resolve({status: "false", message: error.errorno})
+                            resolve({ status: "false", message: error.errorno })
                         });
                 })
             } else {
-                resolve({status: "true", message: "Not data std_refer send to datacenter"})
+                resolve({ status: "true", message: "Not data std_refer send to datacenter" })
             }
         });
     }
@@ -345,23 +346,58 @@ class ayo_connect {
                             if (response.data.message == '') {
                                 // success
                                 res_main = await main_db.update_std_service(item)
-                                if(res_main.status == "false"){
-                                    resolve({status: "false", message: res_main.message})
-                                }else{
-                                    resolve({status: "true", message: res_main.message})
+                                if (res_main.status == "false") {
+                                    resolve({ status: "false", message: res_main.message })
+                                } else {
+                                    resolve({ status: "true", message: res_main.message })
                                 }
                             } else {
                                 // error
-                                resolve({status: "false", message: response.data.sqlMessage})
+                                resolve({ status: "false", message: response.data.sqlMessage })
                             }
                         }).catch(function (error) {
-                            resolve({status: "false", message: error.errorno})
+                            resolve({ status: "false", message: error.errorno })
                         });
                 })
             } else {
                 resolve("Not data std_service send to datacenter ")
             }
         });
+    }
+
+    static async send_data(table, opt) {
+        console.log(`start send data table ${table}`);
+
+        // get data in table
+        let data_table = await main_db.get_data_table(table, opt)
+
+        return new Promise((resolve, reject) => {
+            if (data_table.length > 0) {
+                let uri = url + `/api/his_import?table=${table}`
+                data_table.forEach(item => {
+                    axios.post(uri, [item], config)
+                        .then(async (response) => {
+                            if (response.data.message == '') {
+                                // success
+                                res_main = await main_db.update_flag_table(table, item)
+
+                                if (res_main.status == "false") {
+                                    resolve({ status: "false", message: res_main.message })
+                                } else {
+                                    resolve({ status: "true", message: res_main.message })
+                                }
+                            } else {
+                                // error
+                                resolve({ status: "false", message: response.data.sqlMessage })
+                            }
+                        }).catch(function (error) {
+                            resolve({status: "false", message: error})
+                        });
+                });
+            } else {
+                resolve({status: "true", message: `Not data ${table} send to datacenter`})
+            }
+        })
     }
 }
 

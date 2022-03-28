@@ -8,11 +8,11 @@ class main_db {
         return new Promise((resolve, reject) => {
             var sql = "INSERT IGNORE INTO std_cid_check (cid, flag) VALUES (?, ?)";
             _conn.query(sql, [cid, 0], (err, res) => {
-                if(err){
-                    resolve({status: "false", message: "insert std_cid_check error code => " + err.errorno})
-                }else{
+                if (err) {
+                    resolve({ status: "false", message: "insert std_cid_check error code => " + err.errorno })
+                } else {
                     disconnect(_conn);
-                    resolve({status: "true", message: "call std_cid_check: success"});
+                    resolve({ status: "true", message: "call std_cid_check: success" });
                 }
             });
         })
@@ -23,11 +23,11 @@ class main_db {
         return new Promise((resolve, reject) => {
             var sql = "CALL std_cid_check(?); ";
             _conn.query(sql, [db_name], (err, res) => {
-                if(err){
-                    resolve({status: "false", message: "CALL std_cid_check error code => " + err.errorno})
-                }else{
+                if (err) {
+                    resolve({ status: "false", message: "CALL std_cid_check error code => " + err.errorno })
+                } else {
                     disconnect(_conn);
-                    resolve({status: "true", message: "CALL std_cid_check: success"});
+                    resolve({ status: "true", message: "CALL std_cid_check: success" });
                 }
             })
         })
@@ -39,11 +39,11 @@ class main_db {
         return new Promise((resolve, reject) => {
             var sql = "CALL std_insert_table_all(?, ?); ";
             _conn.query(sql, [db_name, cid], (err, res) => {
-                if(err){
-                    resolve({status: "false", message: "call std_insert_table_all: " + err.errorno})
-                }else{
+                if (err) {
+                    resolve({ status: "false", message: "call std_insert_table_all: " + err.errorno })
+                } else {
                     disconnect(_conn);
-                    resolve({status: "true", message: "call std_insert_table_all: success"});
+                    resolve({ status: "true", message: "call std_insert_table_all: success" });
                 }
             })
         })
@@ -72,11 +72,11 @@ class main_db {
             if (opt.cid) { sql += "and cid = " + opt.cid + " "; }
             sql += " and flag = 0 "
             _conn.query(sql, (err, res) => {
-                if(err){
-                    resolve({status: "false", message: "UPDATE std_admission: " + err.errorno})
-                }else{
+                if (err) {
+                    resolve({ status: "false", message: "UPDATE std_admission: " + err.errorno })
+                } else {
                     disconnect(_conn);
-                    resolve({status: "true", message: "UPDATE std_admission: success"});
+                    resolve({ status: "true", message: "UPDATE std_admission: success" });
                 }
             })
         })
@@ -103,11 +103,11 @@ class main_db {
         return new Promise((resolve, reject) => {
             var sql = `UPDATE std_ipd_diag SET flag=1 WHERE hoscode = '${opt.hoscode}' and cid = '${opt.cid}' and date_serv = '${opt.date_serv}' and vsttime = '${opt.vsttime}' and diagcode = '${opt.diagcode}' `;
             _conn.query(sql, (err, res) => {
-                if(err){
-                    resolve({status: "false", message: "UPDATE std_ipd_diag: " + err.errorno})
-                }else{
+                if (err) {
+                    resolve({ status: "false", message: "UPDATE std_ipd_diag: " + err.errorno })
+                } else {
                     disconnect(_conn);
-                    resolve({status: "true", message: "UPDATE std_ipd_diag: success"});
+                    resolve({ status: "true", message: "UPDATE std_ipd_diag: success" });
                 }
             })
         })
@@ -133,11 +133,11 @@ class main_db {
         return new Promise((resolve, reject) => {
             var sql = `UPDATE std_ipd_drug SET flag=1 WHERE hoscode = '${opt.hoscode}' and cid = '${opt.cid}' and date_serv = '${opt.date_serv}' and vsttime = '${opt.vsttime}' and disstd = '${opt.disstd}' `;
             _conn.query(sql, (err, res) => {
-                if(err){
-                    resolve({status: "false", message: "UPDATE std_ipd_drug: " + err.errorno})
-                }else{
+                if (err) {
+                    resolve({ status: "false", message: "UPDATE std_ipd_drug: " + err.errorno })
+                } else {
                     disconnect(_conn);
-                    resolve({status: "true", message: "UPDATE std_ipd_drug: success"});
+                    resolve({ status: "true", message: "UPDATE std_ipd_drug: success" });
                 }
             })
         })
@@ -163,11 +163,11 @@ class main_db {
         return new Promise((resolve, reject) => {
             var sql = `UPDATE std_ipd_lab SET flag=1 WHERE hoscode = '${opt.hoscode}' and cid = '${opt.cid}' and date_serv = '${opt.date_serv}' and vsttime = '${opt.vsttime}' and labtest = '${opt.labtest}' `;
             _conn.query(sql, (err, res) => {
-                if(err){
-                    resolve({status: "false", message: "UPDATE std_ipd_lab: " + err.errorno})
-                }else{
+                if (err) {
+                    resolve({ status: "false", message: "UPDATE std_ipd_lab: " + err.errorno })
+                } else {
                     disconnect(_conn);
-                    resolve({status: "true", message: "UPDATE std_ipd_lab: success"});
+                    resolve({ status: "true", message: "UPDATE std_ipd_lab: success" });
                 }
             })
         })
@@ -193,11 +193,11 @@ class main_db {
         return new Promise((resolve, reject) => {
             var sql = `UPDATE std_opd_diag SET flag=1 WHERE hoscode = '${opt.hoscode}' and  cid = '${opt.cid}' and date_serv = '${opt.date_serv}' and vsttime = '${opt.vsttime}' and diagcode = '${opt.diagcode}' and flag = '0' `;
             _conn.query(sql, (err, res) => {
-                if(err){
-                    resolve({status: "false", message: "UPDATE std_opd_diag: " + err.errorno})
-                }else{
+                if (err) {
+                    resolve({ status: "false", message: "UPDATE std_opd_diag: " + err.errorno })
+                } else {
                     disconnect(_conn);
-                    resolve({status: "true", message: "UPDATE std_opd_diag: success"});
+                    resolve({ status: "true", message: "UPDATE std_opd_diag: success" });
                 }
             })
         })
@@ -223,11 +223,11 @@ class main_db {
         return new Promise((resolve, reject) => {
             var sql = `UPDATE std_opd_drug SET flag=1 WHERE hoscode = '${opt.hoscode}' and cid = '${opt.cid}' and date_serv = '${opt.date_serv}' and vsttime = '${opt.vsttime}' and disstd = '${opt.disstd}' and flag = '0' `;
             _conn.query(sql, (err, res) => {
-                if(err){
-                    resolve({status: "false", message: "UPDATE std_opd_drug: " + err.errorno})
-                }else{
+                if (err) {
+                    resolve({ status: "false", message: "UPDATE std_opd_drug: " + err.errorno })
+                } else {
                     disconnect(_conn);
-                    resolve({status: "true", message: "UPDATE std_opd_drug: success"});
+                    resolve({ status: "true", message: "UPDATE std_opd_drug: success" });
                 }
             })
         })
@@ -253,11 +253,11 @@ class main_db {
         return new Promise((resolve, reject) => {
             var sql = `UPDATE std_opd_lab SET flag=1 WHERE hoscode = '${opt.hoscode}' and cid = '${opt.cid}' and date_serv = '${opt.date_serv}' and vsttime = '${opt.vsttime}' and labtest = '${opt.labtest}' `;
             _conn.query(sql, (err, res) => {
-                if(err){
-                    resolve({status: "false", message: "UPDATE std_opd_lab: " + err.errorno})
-                }else{
+                if (err) {
+                    resolve({ status: "false", message: "UPDATE std_opd_lab: " + err.errorno })
+                } else {
                     disconnect(_conn);
-                    resolve({status: "true", message: "UPDATE std_opd_lab: success"});
+                    resolve({ status: "true", message: "UPDATE std_opd_lab: success" });
                 };
             })
         })
@@ -283,11 +283,11 @@ class main_db {
         return new Promise((resolve, reject) => {
             var sql = `UPDATE std_person SET flag=1 WHERE cid = '${opt.cid}' `;
             _conn.query(sql, (err, res) => {
-                if(err){
-                    resolve({status: "false", message: "UPDATE std_opd_lab: " + err.errorno})
-                }else{
+                if (err) {
+                    resolve({ status: "false", message: "UPDATE std_opd_lab: " + err.errorno })
+                } else {
                     disconnect(_conn);
-                    resolve({status: "true", message: "UPDATE std_opd_lab: success"});
+                    resolve({ status: "true", message: "UPDATE std_opd_lab: success" });
                 };
             })
         })
@@ -308,16 +308,16 @@ class main_db {
         })
     }
 
-    static async update_std_refer(opt){
+    static async update_std_refer(opt) {
         let _conn = mysql.master();
         return new Promise((resolve, reject) => {
             var sql = `UPDATE std_refer SET flag=1 WHERE hoscode = '${opt.hoscode}' and cid = '${opt.cid}' and date_refer = '${opt.date_refer}' `;
             _conn.query(sql, (err, res) => {
-                if(err){
-                    resolve({status: "false", message: "UPDATE std_refer: " + err.errorno})
-                }else{
+                if (err) {
+                    resolve({ status: "false", message: "UPDATE std_refer: " + err.errorno })
+                } else {
                     disconnect(_conn);
-                    resolve({status: "true", message: "UPDATE std_refer: success"});
+                    resolve({ status: "true", message: "UPDATE std_refer: success" });
                 };
             })
         })
@@ -343,11 +343,26 @@ class main_db {
         return new Promise((resolve, reject) => {
             var sql = `UPDATE std_service SET flag=1 WHERE cid = '${opt.cid}' and date_serv = '${opt.date_serv}' and time_serv = '${opt.time_serv}' `;
             _conn.query(sql, (err, res) => {
-                if(err){
-                    resolve({status: "false", message: "UPDATE std_refer: " + err.errorno})
-                }else{
+                if (err) {
+                    resolve({ status: "false", message: "UPDATE std_refer: " + err.errorno })
+                } else {
                     disconnect(_conn);
-                    resolve({status: "true", message: "UPDATE std_refer: success"});
+                    resolve({ status: "true", message: "UPDATE std_refer: success" });
+                };
+            })
+        })
+    }
+
+    static select_table_all() {
+        let _conn = mysql.master()
+        return new Promise((resolve, reject) => {
+            var sql = "SELECT c.TABLE_NAME table_name FROM information_schema.`TABLES` AS c WHERE c.TABLE_SCHEMA = 'ayo_connect'  and c.TABLE_NAME like 'std_%' and c.TABLE_NAME != 'std_cid_check' "
+            _conn.query(sql, (err, res) => {
+                if (err) {
+                    resolve({ status: "false", message: "SELECT TABLE_NAME: " + err.errorno })
+                } else {
+                    disconnect(_conn);
+                    resolve({ status: "true", message: res });
                 };
             })
         })
@@ -361,6 +376,67 @@ class main_db {
                 if (err) throw err
                 disconnect(_conn)
                 resolve(res[0].select_sql)
+            })
+        })
+    }
+
+    static select_key(table_name) {
+        let _conn = mysql.master()
+        return new Promise((resolve, reject) => {
+            var sql = "SELECT c.COLUMN_NAME column_name FROM information_schema.KEY_COLUMN_USAGE AS c  WHERE c.TABLE_SCHEMA = 'ayo_connect' and c.TABLE_NAME = ? "
+            _conn.query(sql, [table_name], (err, res) => {
+                if (err) throw err
+                disconnect(_conn)
+                resolve(res)
+            })
+        })
+    }
+
+    static async get_data_table(table, opt) {
+
+        var select = await this.select_all(table);
+        let _conn = mysql.master()
+
+        return new Promise((resolve, reject) => {
+            var sql = `SELECT ${select} FROM ${table} WHERE 1 `;
+            if (opt.cid) { sql += "and cid = " + opt.cid + " "; }
+            sql += " and flag = 0 "
+            _conn.query(sql, (err, res) => {
+                if (err) throw err;
+                disconnect(_conn);
+                resolve(res)
+            })
+        })
+    }
+
+    static async update_flag_table(table, opt) {
+        let _conn = mysql.master()
+        var col_key = await this.select_key(table)
+
+        return new Promise((resolve, reject) => {
+
+            var sql = `UPDATE ${table} SET flag=1 WHERE 1 `
+
+            let name_opt = Object.getOwnPropertyNames(opt)
+            let val_opt = Object.values(opt)
+
+            for (let i = 0; i < col_key.length; i++) {
+                var key = col_key[i].column_name
+
+                for (let k = 0; k < name_opt.length; k++) {
+                    if (key == name_opt[k]) {
+                        sql += `and ${key} = '${val_opt[k]}' `
+                    }
+                }
+            }
+
+            _conn.query(sql, (err, res) => {
+                if (err) {
+                    resolve({ status: "false", message: "UPDATE false" })
+                } else {
+                    disconnect(_conn);
+                    resolve({ status: "true", message: "UPDATE success" });
+                };
             })
         })
     }
