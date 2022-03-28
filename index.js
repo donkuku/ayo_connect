@@ -87,7 +87,7 @@ app.post('/send_data', check_login, transfer_his_ayo_connect, async (req, res) =
             table = res_all_table.message[i].table_name
             res_send = await api_axios.send_data(table, opt)
         }
-        res.send("select_table_all")
+        res.send("send data success")
     }else{
         res.send(res_all_table.message)
     }    
