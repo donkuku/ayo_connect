@@ -3,7 +3,7 @@ install node and git
 
 git clone https://github.com/donkuku/ayo_connect.git
 
-cd directory/ayo_connect
+cd ayo_connect
 
 Update name file .config.env => .env 
 
