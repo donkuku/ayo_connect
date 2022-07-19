@@ -31,4 +31,6 @@ npm install pm2-windows-startup -g
 
 pm2 start index.js --name ayo_connect -i 2
 
+pm2 save
+
 pm2 startup
