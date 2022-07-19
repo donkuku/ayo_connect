@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : 192.168.1.253
+ Source Server         : localhost
  Source Server Type    : MySQL
- Source Server Version : 50735
- Source Host           : 192.168.1.253:3306
+ Source Server Version : 100417
+ Source Host           : 127.0.0.1:3306
  Source Schema         : ayo_connect
 
  Target Server Type    : MySQL
- Target Server Version : 50735
+ Target Server Version : 100417
  File Encoding         : 65001
 
- Date: 25/03/2022 10:38:00
+ Date: 19/07/2022 11:54:45
 */
 
 SET NAMES utf8mb4;
@@ -234,6 +234,30 @@ CREATE TABLE `std_service`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Table structure for std_vital_signs
+-- ----------------------------
+DROP TABLE IF EXISTS `std_vital_signs`;
+CREATE TABLE `std_vital_signs`  (
+  `hoscode` varchar(5) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `cid` varchar(13) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `date_serv` date NOT NULL,
+  `vsttime` varchar(6) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `sbp` varchar(9) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `dbp` varchar(9) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `pulse` varchar(9) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `temp` varchar(9) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `waist_cm` varchar(9) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `weight` varchar(9) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `height` varchar(9) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `flag` int(1) DEFAULT NULL,
+  PRIMARY KEY (`hoscode`, `cid`, `date_serv`, `vsttime`) USING BTREE,
+  INDEX `cid`(`cid`) USING BTREE,
+  INDEX `hoscode`(`hoscode`) USING BTREE,
+  INDEX `date_serv`(`date_serv`) USING BTREE,
+  INDEX `vsttime`(`vsttime`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
 -- Procedure structure for std_cid_check
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `std_cid_check`;
@@ -261,7 +285,7 @@ delimiter ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `std_insert_table_all`;
 delimiter ;;
-CREATE DEFINER=`lblhos`@`%` PROCEDURE `std_insert_table_all`(in theDB VARCHAR(128),in theCID VARCHAR(13))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `std_insert_table_all`(in theDB VARCHAR(128),in theCID VARCHAR(13))
 BEGIN
 	#Insert patient
  
@@ -895,7 +919,62 @@ AND rf.vn = pan.vn;');
 	PREPARE stmt FROM @s;
 	EXECUTE stmt;
 	
-	
+SET @s=CONCAT('INSERT IGNORE INTO std_vital_signs
+ SELECT
+ vital_sign.hospcode,
+ vital_sign.cid,
+ vital_sign.date_serv,
+ vital_sign.vsttime,
+ vital_sign.sbp,
+ vital_sign.dbp,
+ vital_sign.pulse,
+ vital_sign.temp,
+ vital_sign.waist_cm,
+ vital_sign.weight,
+ vital_sign.height ,0
+FROM
+ (
+ SELECT
+  o.vn,
+  p.cid 
+ FROM
+  ',theDB,'.ovst o
+  INNER JOIN ',theDB,'.patient p ON p.hn = o.hn 
+ WHERE
+  cid = "',theCID,'" 
+ GROUP BY
+  o.vn 
+ ORDER BY
+  o.vn DESC 
+  LIMIT 5 
+ ) AS pvn
+ INNER JOIN (
+ SELECT
+  o.vn,(
+  SELECT
+   hospitalcode 
+  FROM
+   ',theDB,'.opdconfig 
+  ) hospcode,
+  p.cid,
+  o.vstdate date_serv,
+  o.vsttime,
+  o.bps sbp,
+  o.bpd dbp,
+  o.pulse,
+  o.temperature temp,
+  o.waist waist_cm,
+  o.bw weight,
+  o.height 
+ FROM
+  ',theDB,'.opdscreen o
+  INNER JOIN ',theDB,'.patient p ON o.hn = p.hn 
+ WHERE
+  cid = "',theCID,'" 
+ ) AS vital_sign ON pvn.vn = vital_sign.vn 
+ AND pvn.cid = vital_sign.cid; ');
+ PREPARE stmt FROM @s;
+ EXECUTE stmt;
 
 
 

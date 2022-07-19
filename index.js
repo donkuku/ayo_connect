@@ -27,7 +27,7 @@ const db_name_his = process.env.db_name_his
 var token = process.env.token
 const port = process.env.PORT
 
-var time_job = '00 00 00 * * *';
+var time_job = '00 30 12 * * *';
 
 // Send Data Auto
 cron.schedule(time_job, () => {
@@ -95,7 +95,7 @@ app.post('/send_data', check_login, transfer_his_ayo_connect, async (req, res) =
 
 // Middleware
 async function check_login(req, res, next) {
-    console.log("login");
+    console.log("login"); 
     res_login = await api_axios.login(username, password);
 
     if (res_login.status == "true") {
